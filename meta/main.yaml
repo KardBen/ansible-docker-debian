@@ -1,0 +1,22 @@
+galaxy_info:
+  author: Benjamin Kardumovic
+  description: Installs Docker Engine, CLI, and Compose on Debian-based systems.
+  company: BK Labs
+  
+  license: Apache License 2.0
+
+  min_ansible_version: "2.10"
+
+  galaxy_tags:
+    - debian
+    - docker
+    - containers
+    - system
+
+  platforms:
+    - name: Debian
+      versions:
+        - bullseye
+        - bookworm
+
+dependencies: []

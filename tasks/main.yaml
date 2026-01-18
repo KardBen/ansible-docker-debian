@@ -1,0 +1,11 @@
+# Prerequisite - Install Docker Engine on Debian
+# According to https://docs.docker.com/engine/install/debian/
+###############################################################################################
+
+# Setup docker apt repo
+- name: Prerequisite - install apt packages
+  ansible.builtin.apt:
+    update_cache: true
+    pkg:
+      - ca-certificates
+      - curl
