@@ -1,11 +1,51 @@
-# Prerequisite - Install Docker Engine on Debian
+# Install Docker Engine on Debian
 # According to https://docs.docker.com/engine/install/debian/
 ###############################################################################################
 
 # Setup docker apt repo
-- name: Prerequisite - install apt packages
+- name: Install prerequisites
   ansible.builtin.apt:
     update_cache: true
     pkg:
-      - ca-certificates
       - curl
+      - python3-debian
+      - ca-certificates
+
+- name: Add repo using key from URL
+  ansible.builtin.deb822_repository:
+    name: docker
+    types: deb
+    uris: https://download.docker.com/linux/debian
+    suites: "{{ ansible_distribution_release }}"
+    components: stable
+    signed_by: https://download.docker.com/linux/debian/gpg
+###############################################################################################
+
+# Now it is possible to install docker packages
+- name: Install docker packages
+  ansible.builtin.apt:
+    update_cache: true
+    pkg:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+
+# Test functionality
+- name: Run hello-world container as test
+  community.docker.docker_container:
+    name: hello-world-test
+    image: hello-world
+  register: hello_world_test_output
+
+- name: Fail - if hello world container failed
+  ansible.builtin.fail:
+    msg: The docker installation does not seem to have finished successfully. Please check Debian logs.
+  when: hello_world_test_output.failed
+
+# Remove container again after successful testing :)
+- name: Remove container
+  community.docker.docker_container:
+    name: hello-world-test
+    state: absent
