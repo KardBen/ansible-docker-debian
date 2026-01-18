@@ -35,7 +35,7 @@ Minimal configuration:
 ```
 
 ## 📄 License
-MIT
+Apache-2.0 license
 
 ## 👤 Author
 Benjamin Kardumovic
